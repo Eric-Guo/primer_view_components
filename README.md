@@ -28,3 +28,8 @@ Visit [https://primer.style/view_components/](https://primer.style/design/compon
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+```bash
+cp app/assets/javascripts/primer_view_components.js /Users/guochunzhong/git/sso/openproject/frontend/node_modules/@openproject/primer-view-components/app/assets/javascripts
+cp app/assets/javascripts/primer_view_components.js.map /Users/guochunzhong/git/sso/openproject/frontend/node_modules/@openproject/primer-view-components/app/assets/javascripts
+```
