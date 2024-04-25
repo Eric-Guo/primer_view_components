@@ -5,7 +5,7 @@ mkdir -p vendor/bundle
 chmod 0700 vendor/bundle
 bundle config set --local path 'vendor/bundle'
 bundle install
-npm install
+yarn install
 
 # Set up demo
 pushd demo
@@ -13,7 +13,7 @@ mkdir -p vendor/bundle
 chmod 0700 vendor/bundle
 bundle config set --local path 'vendor/bundle'
 bundle install
-npm install
+yarn install
 popd
 
 # Initial build of docs content
