@@ -14,6 +14,6 @@
     "vite-plugin-ruby": "^5.1.1"
   },
   "scripts": {
-    "build:css": "postcss --config ../ ./app/assets/stylesheets/application.postcss.css -o ./app/assets/builds/application.css"
+    "build:css": "yarn run postcss --config ../ ./app/assets/stylesheets/application.postcss.css -o ./app/assets/builds/application.css"
   }
 }
