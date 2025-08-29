@@ -20,7 +20,7 @@ module Primer
       # To render custom content, call the `with_button_component` method and pass a block that returns HTML.
       renders_many :actions, types: {
         button: {
-          renders: lambda { |icon_only: false, leading_icon:, label:, **kwargs, &block|
+          renders: lambda { |icon_only: false, leading_icon:, label:, location: :right, **kwargs, &block|
             if label.nil? || label.empty?
               raise ArgumentError, "You need to provide a valid label."
             end
@@ -33,26 +33,53 @@ module Primer
             )
 
             icon_args = kwargs.deep_dup
+            # If the action is placed on the left pane, hide it when the filter input expands on mobile
+            icon_args = set_as_hidden_filter_target(icon_args) if location == :left
 
             if icon_only
-              Primer::Beta::IconButton.new(**icon_args)
+              component = Primer::Beta::IconButton.new(**icon_args)
+              @left_actions ||= []
+              @right_actions ||= []
+              target_actions = location == :left ? @left_actions : @right_actions
+              target_actions.push({ component: component, block: block })
+
+              component
             else
               @mobile_actions ||= []
               mobile_component =  Primer::Beta::IconButton.new(display: MOBILE_ACTIONS_DISPLAY,
                                                                **icon_args)
-              @mobile_actions.push({ component: mobile_component, block: block})
+              @mobile_actions.push({ component: mobile_component, block: block })
 
-              Primer::OpenProject::SubHeader::Button.new(display: DESKTOP_ACTIONS_DISPLAY, **kwargs)
+              desktop_kwargs = kwargs.deep_dup
+              desktop_kwargs = set_as_hidden_filter_target(desktop_kwargs) if location == :left
+              component = Primer::OpenProject::SubHeader::Button.new(display: DESKTOP_ACTIONS_DISPLAY, **desktop_kwargs)
+
+              @left_actions ||= []
+              @right_actions ||= []
+              target_actions = location == :left ? @left_actions : @right_actions
+              target_actions.push({ component: component, block: block })
+
+              component
             end
           },
         },
         button_group: {
-          renders: lambda { |**kwargs|
-            Primer::OpenProject::SubHeader::ButtonGroup.new(**kwargs)
+          renders: lambda { |location: :right, **kwargs, &block|
+            desktop_kwargs = kwargs.deep_dup
+            desktop_kwargs = set_as_hidden_filter_target(desktop_kwargs) if location == :left
+
+            component = Primer::OpenProject::SubHeader::ButtonGroup.new(**desktop_kwargs)
+
+            @left_actions ||= []
+            @right_actions ||= []
+            target_actions = location == :left ? @left_actions : @right_actions
+            target_actions.push({ component: component, block: block })
+
+            component
           },
         },
         menu: {
-          renders: lambda { |icon_only: false, leading_icon:, label:, button_arguments: {}, **kwargs, &block|
+          renders: lambda { |icon_only: false, leading_icon:, label:, button_arguments: {}, location: :right, **kwargs, &block|
             if label.nil? || label.empty?
               raise ArgumentError, "You need to provide a valid label."
             end
@@ -65,9 +92,18 @@ module Primer
             mobile_component =  Primer::OpenProject::SubHeader::Menu.new(icon_only: true,
                                                                          display: MOBILE_ACTIONS_DISPLAY,
                                                                          **kwargs)
-            @mobile_actions.push({ component: mobile_component, block: block})
+            @mobile_actions.push({ component: mobile_component, block: block })
 
-            Primer::OpenProject::SubHeader::Menu.new(icon_only: icon_only,display: DESKTOP_ACTIONS_DISPLAY, **kwargs)
+            desktop_kwargs = kwargs.deep_dup
+            desktop_kwargs = set_as_hidden_filter_target(desktop_kwargs) if location == :left
+            component = Primer::OpenProject::SubHeader::Menu.new(icon_only: icon_only, display: DESKTOP_ACTIONS_DISPLAY, **desktop_kwargs)
+
+            @left_actions ||= []
+            @right_actions ||= []
+            target_actions = location == :left ? @left_actions : @right_actions
+            target_actions.push({ component: component, block: block })
+
+            component
           },
         }
       }
@@ -111,7 +147,7 @@ module Primer
                                                          display: :none,
                                                          data: {
                                                            targets: SHOWN_FILTER_TARGET_SELECTOR,
-                                                           action: "click:sub-header#collapseFilterInput"})
+                                                           action: "click:sub-header#collapseFilterInput" })
 
 
         Primer::Alpha::TextField.new(name: name, label: label, **system_arguments)
@@ -140,7 +176,7 @@ module Primer
             if icon_only
               Primer::Beta::IconButton.new(**icon_args)
             else
-              @mobile_filter_button =  Primer::Beta::IconButton.new(display: MOBILE_ACTIONS_DISPLAY,
+              @mobile_filter_button = Primer::Beta::IconButton.new(display: MOBILE_ACTIONS_DISPLAY,
                                                                     **icon_args)
 
               Primer::OpenProject::SubHeader::Button.new(display: DESKTOP_ACTIONS_DISPLAY, **kwargs)
@@ -165,18 +201,18 @@ module Primer
       }
 
       renders_one :segmented_control, lambda { |**system_arguments, &block|
-          deny_tag_argument(**system_arguments)
-          system_arguments[:mr] ||= 2
-          system_arguments = set_as_hidden_filter_target(system_arguments)
+        deny_tag_argument(**system_arguments)
+        system_arguments[:mr] ||= 2
+        system_arguments = set_as_hidden_filter_target(system_arguments)
 
-          @segmented_control_block = block
-          @mobile_segmented_control = Primer::OpenProject::SubHeader::SegmentedControl.new(
-            hide_labels: true,
-            display: MOBILE_ACTIONS_DISPLAY,
-            **system_arguments
-          )
+        @segmented_control_block = block
+        @mobile_segmented_control = Primer::OpenProject::SubHeader::SegmentedControl.new(
+          hide_labels: true,
+          display: MOBILE_ACTIONS_DISPLAY,
+          **system_arguments
+        )
 
-          Primer::OpenProject::SubHeader::SegmentedControl.new(display: DESKTOP_ACTIONS_DISPLAY, **system_arguments)
+        Primer::OpenProject::SubHeader::SegmentedControl.new(display: DESKTOP_ACTIONS_DISPLAY, **system_arguments)
       }
 
       renders_one :text, lambda { |**system_arguments|
@@ -200,6 +236,9 @@ module Primer
         @system_arguments = system_arguments
         @system_arguments[:tag] = :"sub-header"
 
+        @left_actions = []
+        @right_actions = []
+
         @filter_container = Primer::BaseComponent.new(tag: :div,
                                                       classes: "SubHeader-filterContainer",
                                                       display: DESKTOP_ACTIONS_DISPLAY,
@@ -216,7 +255,7 @@ module Primer
       def before_render
         @system_arguments[:classes] = class_names(
           @system_arguments[:classes],
-          "SubHeader--emptyLeftPane" => !segmented_control? && !filter_button && !filter_input
+          "SubHeader--emptyLeftPane" => !segmented_control? && !filter_button && !filter_input && (@left_actions.nil? || @left_actions.empty?)
         )
       end
 
