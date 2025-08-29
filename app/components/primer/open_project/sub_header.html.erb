@@ -23,6 +23,14 @@
         <% @segmented_control_block.call(control) %>
       <% end %>
     <% end %>
+
+    <% unless @left_actions.nil? %>
+      <% @left_actions.each do |left_action| %>
+        <%= render(left_action[:component]) do |action| %>
+          <% left_action[:block]&.call(action) %>
+        <% end %>
+      <% end %>
+    <% end %>
   </div>
 
   <div class="SubHeader-middlePane SubHeader-hiddenOnExpand">
@@ -30,8 +38,12 @@
   </div>
 
   <div class="SubHeader-rightPane SubHeader-hiddenOnExpand">
-    <% actions.each do |action| %>
-      <%= action %>
+    <% unless @right_actions.nil? %>
+      <% @right_actions.each do |right_action| %>
+        <%= render(right_action[:component]) do |action| %>
+          <% right_action[:block]&.call(action) %>
+        <% end %>
+      <% end %>
     <% end %>
 
     <% @mobile_actions.each do |mobile_action| %>
