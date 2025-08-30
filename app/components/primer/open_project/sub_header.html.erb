@@ -31,6 +31,14 @@
   </div>
 
   <div class="SubHeader-middlePane" data-targets="<%= HIDDEN_FILTER_TARGET_SELECTOR %>">
+    <% unless @middle_actions.nil? %>
+      <% @middle_actions.each do |middle_action| %>
+        <%= render(middle_action[:component]) do |action| %>
+          <% middle_action[:block]&.call(action) %>
+        <% end %>
+      <% end %>
+    <% end %>
+    
     <%= text %>
   </div>
 

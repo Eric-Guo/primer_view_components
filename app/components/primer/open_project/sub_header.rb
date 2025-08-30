@@ -39,8 +39,13 @@ module Primer
             if icon_only
               component = Primer::Beta::IconButton.new(**icon_args)
               @left_actions ||= []
+              @middle_actions ||= []
               @right_actions ||= []
-              target_actions = location == :left ? @left_actions : @right_actions
+              target_actions = case location
+                               when :left then @left_actions
+                               when :middle then @middle_actions
+                               else @right_actions
+                               end
               target_actions.push({ component: component, block: block })
 
               component
@@ -55,8 +60,13 @@ module Primer
               component = Primer::OpenProject::SubHeader::Button.new(display: DESKTOP_ACTIONS_DISPLAY, **desktop_kwargs)
 
               @left_actions ||= []
+              @middle_actions ||= []
               @right_actions ||= []
-              target_actions = location == :left ? @left_actions : @right_actions
+              target_actions = case location
+                               when :left then @left_actions
+                               when :middle then @middle_actions
+                               else @right_actions
+                               end
               target_actions.push({ component: component, block: block })
 
               component
@@ -71,8 +81,13 @@ module Primer
             component = Primer::OpenProject::SubHeader::ButtonGroup.new(**desktop_kwargs)
 
             @left_actions ||= []
+            @middle_actions ||= []
             @right_actions ||= []
-            target_actions = location == :left ? @left_actions : @right_actions
+            target_actions = case location
+                             when :left then @left_actions
+                             when :middle then @middle_actions
+                             else @right_actions
+                             end
             target_actions.push({ component: component, block: block })
 
             component
@@ -99,8 +114,13 @@ module Primer
             component = Primer::OpenProject::SubHeader::Menu.new(icon_only: icon_only, display: DESKTOP_ACTIONS_DISPLAY, **desktop_kwargs)
 
             @left_actions ||= []
+            @middle_actions ||= []
             @right_actions ||= []
-            target_actions = location == :left ? @left_actions : @right_actions
+            target_actions = case location
+                             when :left then @left_actions
+                             when :middle then @middle_actions
+                             else @right_actions
+                             end
             target_actions.push({ component: component, block: block })
 
             component
