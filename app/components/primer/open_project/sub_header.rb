@@ -37,7 +37,11 @@ module Primer
 
             if icon_only
               component = Primer::Beta::IconButton.new(**icon_args)
-              target_actions = location == :left ? @left_actions : @right_actions
+              target_actions = case location
+                               when :left then @left_actions
+                               when :middle then @middle_actions
+                               else @right_actions
+                               end
               target_actions.push({ component: component, block: block })
 
               component
@@ -50,7 +54,11 @@ module Primer
               desktop_kwargs = kwargs.deep_dup
               desktop_kwargs = set_as_hidden_filter_target(desktop_kwargs) if location == :left
               component = Primer::OpenProject::SubHeader::Button.new(display: DESKTOP_ACTIONS_DISPLAY, **desktop_kwargs)
-              target_actions = location == :left ? @left_actions : @right_actions
+              target_actions = case location
+                               when :left then @left_actions
+                               when :middle then @middle_actions
+                               else @right_actions
+                               end
               target_actions.push({ component: component, block: block })
 
               component
@@ -62,7 +70,11 @@ module Primer
             desktop_kwargs = kwargs.deep_dup
             desktop_kwargs = set_as_hidden_filter_target(desktop_kwargs) if location == :left
             component = Primer::OpenProject::SubHeader::ButtonGroup.new(**desktop_kwargs)
-            target_actions = location == :left ? @left_actions : @right_actions
+            target_actions = case location
+                             when :left then @left_actions
+                             when :middle then @middle_actions
+                             else @right_actions
+                             end
             target_actions.push({ component: component, block: block })
 
             component
@@ -87,7 +99,11 @@ module Primer
             desktop_kwargs = kwargs.deep_dup
             desktop_kwargs = set_as_hidden_filter_target(desktop_kwargs) if location == :left
             component = Primer::OpenProject::SubHeader::Menu.new(icon_only: icon_only, display: DESKTOP_ACTIONS_DISPLAY, **desktop_kwargs)
-            target_actions = location == :left ? @left_actions : @right_actions
+            target_actions = case location
+                             when :left then @left_actions
+                             when :middle then @middle_actions
+                             else @right_actions
+                             end
             target_actions.push({ component: component, block: block })
 
             component
@@ -257,6 +273,7 @@ module Primer
 
         filter_container_display = collapsed_search ? :none : DESKTOP_ACTIONS_DISPLAY
         @left_actions = []
+        @middle_actions = []
         @right_actions = []
 
         @filter_container = Primer::BaseComponent.new(tag: :div,
