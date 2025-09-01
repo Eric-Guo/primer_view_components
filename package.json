@@ -1,6 +1,9 @@
 {
-  "name": "@openproject/primer-view-components",
+  "name": "@mixtint/primer-view-components",
   "version": "0.78.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "ViewComponents of the Primer Design System for OpenProject",
   "main": "app/assets/javascripts/primer_view_components.js",
   "module": "app/components/primer/primer.js",
