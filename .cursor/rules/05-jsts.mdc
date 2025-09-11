@@ -1,0 +1,17 @@
+---
+globs: *.js,*.ts,*.mjs,*.mts
+description: JavaScript/TypeScript usage and build in Primer ViewComponents
+---
+
+### JS/TS
+
+- **Locations**:
+  - App assets: `app/assets/javascripts/**`
+  - Library TS/JS: `lib/primer/**.{js,ts}`
+  - Demo app: `demo/javascript/**` and `demo/vite.config.mts`
+- **Build**: Rollup and Vite configs in [rollup.config.js](mdc:rollup.config.js) and [demo/vite.config.mts](mdc:demo/vite.config.mts). TypeScript config at [tsconfig.json](mdc:tsconfig.json).
+- **Scripts**: Use [script/build-assets](mdc:script/build-assets) and demo scripts in `demo/script/*`.
+
+Conventions:
+- Prefer TypeScript for new utilities.
+- Keep component behavior minimal; prefer server-rendered HTML with progressive enhancement.

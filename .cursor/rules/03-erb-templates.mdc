@@ -1,0 +1,16 @@
+---
+globs: *.erb
+description: ERB template and preview conventions for Primer ViewComponents
+---
+
+### ERB Templates
+
+- **Component templates**: Co-located next to Ruby class as `.html.erb` under `app/components/primer/**`.
+- **Preview templates**: Live under `previews/primer/**` and `previews/pages/**`. Index data available in [static/previews.json](mdc:static/previews.json).
+- **Slot APIs**: Implemented via `renders_one` / `renders_many` in Ruby; referenced in ERB using standard Rails slot syntax.
+- **Accessibility**: Many components call `validate_aria_label` or enforce ARIA denylist in the base class.
+
+Conventions:
+- Use `content` or slots for inner markup; avoid direct `@content` usage.
+- Use Primer utility classes and component-provided `system_arguments` helpers.
+- For examples, search previews under `previews/primer/**` for the component name.
