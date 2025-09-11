@@ -170,6 +170,8 @@ module Primer
         # @param truncate_label [Boolean | Symbol] How the label should be truncated when the text does not fit inside the bounds of the list item. <%= one_of(Primer::Alpha::ActionList::Item::TRUNCATION_BEHAVIOR_OPTIONS) %> Pass `false` or `:none` to wrap label text. Pass `true` or `:truncate` to truncate labels with ellipses. Pass `:show_tooltip` to show the entire label contents in a tooltip when the item is hovered.
         # @param href [String] Link URL.
         # @param role [String] ARIA role describing the function of the item.
+        # @param target [String] Link target attribute to apply when rendering an anchor.
+        # @param rel [String] Link rel attribute to apply when rendering an anchor.
         # @param size [Symbol] Controls block sizing of the item.
         # @param scheme [Symbol] Controls color/style based on behavior.
         # @param disabled [Boolean] Disabled items are not clickable and visually dim.
@@ -190,6 +192,8 @@ module Primer
           truncate_label: :none,
           href: nil,
           role: nil,
+          target: nil,
+          rel: nil,
           size: DEFAULT_SIZE,
           scheme: DEFAULT_SCHEME,
           disabled: false,
@@ -260,6 +264,12 @@ module Primer
               @content_arguments[:type] = @form_wrapper.form_required? ? :submit : :button
               @content_arguments[:onclick] = on_click if on_click
             end
+          end
+
+          # If rendering as an anchor, thread through link-only attributes.
+          if @content_arguments[:tag] == :a
+            @content_arguments[:target] = target if target && !@content_arguments.key?(:target)
+            @content_arguments[:rel] = rel if rel && !@content_arguments.key?(:rel)
           end
 
           if @content_arguments[:tag] != :button && @form_wrapper.form_required?
