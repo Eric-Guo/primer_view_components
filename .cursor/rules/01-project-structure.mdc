@@ -1,0 +1,28 @@
+---
+alwaysApply: true
+---
+
+### Primer ViewComponents: Project Structure Guide
+
+- **Rails engine entry**: [lib/primer/view_components/engine.rb](mdc:lib/primer/view_components/engine.rb)
+- **Gem entry point**: [lib/primer/view_components.rb](mdc:lib/primer/view_components.rb)
+- **Base component class**: [app/components/primer/component.rb](mdc:app/components/primer/component.rb)
+- **Components**: live under `app/components/primer/**` with co-located `.rb`, `.erb`, and `.pcss` files.
+- **Previews**: live under `previews/primer/**` and `previews/pages/**` and are indexed in [static/previews.json](mdc:static/previews.json).
+- **Forms examples**: live under `app/forms/**`; preview page index in [static/form_previews.json](mdc:static/form_previews.json).
+- **Constants and statuses**: [lib/primer/view_components/constants.rb](mdc:lib/primer/view_components/constants.rb), [lib/primer/view_components/statuses.rb](mdc:lib/primer/view_components/statuses.rb)
+- **Static docs data generators**: [lib/primer/static.rb](mdc:lib/primer/static.rb),
+  [lib/primer/static/generate_arguments.rb](mdc:lib/primer/static/generate_arguments.rb),
+  [lib/primer/static/generate_previews.rb](mdc:lib/primer/static/generate_previews.rb),
+  [lib/primer/static/generate_info_arch.rb](mdc:lib/primer/static/generate_info_arch.rb),
+  [lib/primer/static/generate_constants.rb](mdc:lib/primer/static/generate_constants.rb),
+  [lib/primer/static/generate_form_previews.rb](mdc:lib/primer/static/generate_form_previews.rb),
+  [lib/primer/static/generate_audited_at.rb](mdc:lib/primer/static/generate_audited_at.rb)
+- **Static docs data outputs**: [static/arguments.json](mdc:static/arguments.json), [static/classes.json](mdc:static/classes.json), [static/constants.json](mdc:static/constants.json), [static/info_arch.json](mdc:static/info_arch.json), [static/statuses.json](mdc:static/statuses.json)
+- **Build and tooling configs**: [postcss.config.js](mdc:postcss.config.js), [rollup.config.js](mdc:rollup.config.js), [eslint.config.mjs](mdc:eslint.config.mjs), [tsconfig.json](mdc:tsconfig.json)
+- **Scripts**: [script/dev](mdc:script/dev), [script/test](mdc:script/test), [script/run-playwright](mdc:script/run-playwright), [script/build-assets](mdc:script/build-assets), [script/build-utilities](mdc:script/build-utilities)
+- **Gem metadata**: [primer_view_components.gemspec](mdc:primer_view_components.gemspec), [README.md](mdc:README.md)
+
+Tips:
+- Start at the engine and base component when exploring behavior.
+- For any component `Foo`, look for `app/components/primer/foo.rb`, `app/components/primer/foo.html.erb`, and `app/components/primer/foo.pcss`.
