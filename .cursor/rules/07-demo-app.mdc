@@ -1,0 +1,11 @@
+---
+description: Demo app usage and entry points
+---
+
+### Demo App
+
+- **Rails demo root**: [demo/](mdc:demo/)
+- **Entry**: [demo/config/routes.rb](mdc:demo/config/routes.rb), [demo/config/application.rb](mdc:demo/config/application.rb)
+- **Controllers/Views**: `demo/app/controllers/**`, `demo/app/views/**`
+- **Assets**: `demo/app/javascript/**` with Vite config [demo/vite.config.mts](mdc:demo/vite.config.mts)
+- **Run**: Use [demo/bin/rails](mdc:demo/bin/rails) or [script/dev](mdc:script/dev)
