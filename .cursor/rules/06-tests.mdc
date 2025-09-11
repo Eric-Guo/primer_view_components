@@ -1,0 +1,16 @@
+---
+globs: test/**
+description: Test suite layout and guidance for Primer ViewComponents
+---
+
+### Tests
+
+- **Component tests**: `test/components/**`
+- **Lib/unit tests**: `test/lib/**`
+- **System tests**: `test/system/**`
+- **Accessibility**: [test/accessibility_test.rb](mdc:test/accessibility_test.rb)
+- **Playwright**: Config at [playwright.config.ts](mdc:playwright.config.ts), scripts via [script/run-playwright](mdc:script/run-playwright)
+
+Run tests:
+- Ruby: [script/test](mdc:script/test)
+- Playwright: [script/run-playwright](mdc:script/run-playwright)

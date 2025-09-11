@@ -1,0 +1,22 @@
+---
+globs: *.rb
+description: Ruby navigation for Primer ViewComponents
+---
+
+### Ruby Navigation
+
+- **Base class**: Components inherit from [app/components/primer/component.rb](mdc:app/components/primer/component.rb). It mixes in helpers, status DSL, and audited DSL.
+- **Rails engine**: Mounts and initializers live in [lib/primer/view_components/engine.rb](mdc:lib/primer/view_components/engine.rb).
+- **Gem namespace**: Start at [lib/primer/view_components.rb](mdc:lib/primer/view_components.rb) for requires and configuration.
+- **Statuses and constants**: [lib/primer/view_components/statuses.rb](mdc:lib/primer/view_components/statuses.rb), [lib/primer/view_components/constants.rb](mdc:lib/primer/view_components/constants.rb).
+- **Static generation**: Entrypoint [lib/primer/static.rb](mdc:lib/primer/static.rb) and generators in `lib/primer/static/*` create JSON under `static/`.
+
+Conventions:
+- Component class file: `app/components/primer/<component>.rb`
+- Template: `app/components/primer/<component>.html.erb`
+- Styles: `app/components/primer/<component>.pcss`
+- Preview: `previews/primer/<component>_preview.rb` with example ERB under `previews/primer/**`.
+
+Testing:
+- Component tests in `test/components/**` and lib tests in `test/lib/**`.
+- System and accessibility tests live under `test/system/**` and [test/accessibility_test.rb](mdc:test/accessibility_test.rb).
