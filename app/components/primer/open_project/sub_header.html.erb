@@ -49,8 +49,6 @@
       <%= render(@middle_text[:component]) do |text_component| %>
         <% @middle_text[:block]&.call(text_component) %>
       <% end %>
-    <% else %>
-      <%= text %>
     <% end %>
   </div>
 
