@@ -31,6 +31,12 @@
         <% end %>
       <% end %>
     <% end %>
+
+    <% if @left_text.present? %>
+      <%= render(@left_text[:component]) do |text_component| %>
+        <% @left_text[:block]&.call(text_component) %>
+      <% end %>
+    <% end %>
   </div>
 
   <div class="SubHeader-middlePane SubHeader-hiddenOnExpand">
@@ -41,8 +47,13 @@
         <% end %>
       <% end %>
     <% end %>
-
-    <%= text %>
+    <% if @middle_text.present? %>
+      <%= render(@middle_text[:component]) do |text_component| %>
+        <% @middle_text[:block]&.call(text_component) %>
+      <% end %>
+    <% else %>
+      <%= text %>
+    <% end %>
   </div>
 
   <div class="SubHeader-rightPane SubHeader-hiddenOnExpand">
@@ -51,6 +62,12 @@
         <%= render(right_action[:component]) do |action| %>
           <% right_action[:block]&.call(action) %>
         <% end %>
+      <% end %>
+    <% end %>
+
+    <% if @right_text.present? %>
+      <%= render(@right_text[:component]) do |text_component| %>
+        <% @right_text[:block]&.call(text_component) %>
       <% end %>
     <% end %>
 
