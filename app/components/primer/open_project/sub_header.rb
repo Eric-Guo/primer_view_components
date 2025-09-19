@@ -235,10 +235,22 @@ module Primer
         Primer::OpenProject::SubHeader::SegmentedControl.new(display: DESKTOP_ACTIONS_DISPLAY, **system_arguments)
       }
 
-      renders_one :text, lambda { |**system_arguments|
+      renders_one :text, lambda { |location: :middle, **system_arguments, &block|
         system_arguments[:font_weight] ||= :bold
+        system_arguments = set_as_hidden_filter_target(system_arguments) if location == :left
 
-        Primer::Beta::Text.new(**system_arguments)
+        component = Primer::Beta::Text.new(**system_arguments)
+
+        case location
+        when :left
+          @left_text = { component: component, block: block }
+        when :right
+          @right_text = { component: component, block: block }
+        else
+          @middle_text = { component: component, block: block }
+        end
+
+        component
       }
 
       # A slot for a generic component which will be shown in a second row below the rest, spanning the whole width
@@ -275,7 +287,7 @@ module Primer
       def before_render
         @system_arguments[:classes] = class_names(
           @system_arguments[:classes],
-          "SubHeader--emptyLeftPane" => !segmented_control? && !filter_button && !filter_input && (@left_actions.nil? || @left_actions.empty?)
+          "SubHeader--emptyLeftPane" => !segmented_control? && !filter_button && !filter_input && (@left_actions.nil? || @left_actions.empty?) && (@left_text.nil?)
         )
       end
 
