@@ -86,6 +86,34 @@ module Primer
         assert_selector("ul.ActionListWrap[aria-labelledby='#{id}']")
       end
 
+      def test_heading_trailing_visual_counter
+        render_inline(Primer::Alpha::ActionList.new(aria: { label: "List" })) do |component|
+          component.with_heading(title: "Heading")
+          component.with_trailing_visual_counter(count: 15)
+        end
+
+        assert_selector(".ActionList-sectionDivider-trailingVisual .Counter", text: "15")
+      end
+
+      def test_trailing_visual_counter_applied_before_heading
+        render_inline(Primer::Alpha::ActionList.new(aria: { label: "List" })) do |component|
+          component.with_trailing_visual_counter(count: 7)
+          component.with_heading(title: "Heading")
+        end
+
+        assert_selector(".ActionList-sectionDivider-trailingVisual .Counter", text: "7")
+      end
+
+      def test_trailing_visual_counter_without_heading_raises
+        error = assert_raises ArgumentError do
+          render_inline(Primer::Alpha::ActionList.new(aria: { label: "List" })) do |component|
+            component.with_trailing_visual_counter(count: 3)
+          end
+        end
+
+        assert_match(/trailing visuals require a heading/i, error.message)
+      end
+
       def test_allows_content_arguments
         render_inline(Primer::Alpha::ActionList.new(aria: { label: "List" })) do |component|
           component.with_item(label: "Item 1", href: "/item1")
