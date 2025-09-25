@@ -656,6 +656,23 @@ nav-list {
   }
 }
 
+.ActionList-sectionDividerHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--base-size-8);
+}
+
+.ActionList-sectionDividerHeader .ActionList-sectionDivider-title {
+  align-self: baseline;
+}
+
+.ActionList-sectionDivider-trailingVisual {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
+
 .ActionList-sectionDivider--filled {
   /* stylelint-disable-next-line primer/spacing */
   margin-block-start: calc(var(--base-size-8) - var(--borderWidth-thin));
