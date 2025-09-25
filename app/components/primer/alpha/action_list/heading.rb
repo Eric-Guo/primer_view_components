@@ -15,6 +15,14 @@ module Primer
         HEADING_MAX = 6
         HEADING_LEVELS = (HEADING_MIN..HEADING_MAX).to_a.freeze
 
+        # Trailing visuals that render alongside the heading title.
+        #
+        # To render a counter, call `with_trailing_visual_counter`, which accepts the arguments
+        # accepted by <%= link_to_component(Primer::Beta::Counter) %>.
+        renders_one :trailing_visual, types: {
+          counter: Primer::Beta::Counter
+        }
+
         attr_reader :title_id, :subtitle_id
 
         # @param title [String] Sub list title.

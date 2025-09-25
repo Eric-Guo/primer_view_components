@@ -26,6 +26,12 @@
   "ActionList-sectionDivider--filled": [
     "Primer::Alpha::ActionList"
   ],
+  "ActionList-sectionDivider-trailingVisual": [
+    "Primer::Alpha::ActionList"
+  ],
+  "ActionList-sectionDividerHeader": [
+    "Primer::Alpha::ActionList"
+  ],
   "ActionListContent": [
     "Primer::Alpha::ActionList"
   ],
