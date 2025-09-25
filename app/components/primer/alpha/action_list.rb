@@ -63,6 +63,25 @@ module Primer
         component_klass.new(**system_arguments)
       }
 
+      alias_method :with_heading_without_trailing_visual_support, :with_heading
+
+      def with_heading(**system_arguments, &block)
+        with_heading_without_trailing_visual_support(**system_arguments, &block).tap do |heading_component|
+          apply_pending_trailing_visuals!(heading_component)
+        end
+      end
+
+      # Adds a trailing visual counter to the list heading.
+      #
+      # @param system_arguments [Hash] The arguments accepted by <%= link_to_component(Primer::Beta::Counter) %>.
+      def with_trailing_visual_counter(**system_arguments, &block)
+        if heading?
+          heading.with_trailing_visual_counter(**system_arguments, &block)
+        else
+          pending_trailing_visuals << [:counter, system_arguments, block]
+        end
+      end
+
       # @!parse
       #   # Adds an item to the list.
       #   #
@@ -173,6 +192,8 @@ module Primer
 
       # @private
       def before_render
+        apply_pending_trailing_visuals!
+
         return unless heading?
 
         @system_arguments[:"aria-labelledby"] = heading.title_id
@@ -257,6 +278,30 @@ module Primer
       def will_add_item(_item); end
 
       private
+
+      def pending_trailing_visuals
+        @pending_trailing_visuals ||= []
+      end
+
+      def apply_pending_trailing_visuals!(target_heading = heading)
+        return if @pending_trailing_visuals.blank?
+
+        unless target_heading
+          raise ArgumentError, "ActionList trailing visuals require a heading. Please call `with_heading` before adding trailing visuals."
+        end
+
+        @pending_trailing_visuals.each do |(type, system_arguments, block)|
+          method_name = "with_trailing_visual_#{type}"
+
+          unless target_heading.respond_to?(method_name)
+            raise ArgumentError, "Unsupported trailing visual type: #{type}"
+          end
+
+          target_heading.public_send(method_name, **system_arguments, &block)
+        end
+
+        @pending_trailing_visuals.clear
+      end
 
       def with_post_list_content(&block)
         @post_list_content_block = block
