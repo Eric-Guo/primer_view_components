@@ -57,7 +57,7 @@
     "@github/remote-input-element": "^0.4.0",
     "@github/tab-container-element": "^3.4.0",
     "@oddbird/popover-polyfill": "^0.5.2",
-    "@primer/behaviors": "^1.8.3",
+    "@primer/behaviors": "^1.8.4",
     "@primer/live-region-element": "^0.8.0"
   },
   "peerDependencies": {
@@ -78,7 +78,7 @@
     "axe-core": "^4.11.0",
     "chokidar-cli": "^3.0.0",
     "css-what": "^7.0.0",
-    "cssnano": "^7.1.1",
+    "cssnano": "^7.1.2",
     "eslint": "^9.38.0",
     "eslint-plugin-github": "^6.0.0",
     "glob": "^11.0.3",
