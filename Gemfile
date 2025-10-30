@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 gemspec
-rails_version = (ENV["RAILS_VERSION"] || "8.0.3").to_s
+rails_version = (ENV["RAILS_VERSION"] || "8.0.4").to_s
 
 gem "rack-cors"
 gem "rake", "~> 13.3"
@@ -39,7 +39,7 @@ gem "lookbook", "~> 2.3.13"
 if ENV["VIEW_COMPONENT_PATH"]
   gem "view_component", path: ENV["VIEW_COMPONENT_PATH"]
 else
-  gem "view_component", "4.0.2"
+  gem "view_component", "~> 4.1.0"
 end
 
 gem "kramdown", "~> 2.5"
