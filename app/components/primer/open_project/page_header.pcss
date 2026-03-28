@@ -68,6 +68,38 @@
   justify-content: flex-end;
   display: flex;
   align-items: center;
+  color: var(--fgColor-default);
+}
+
+/* OpenProject legacy form markup inside header actions: match Primer / dark theme */
+.PageHeader-actions .form--label {
+  color: var(--fgColor-muted);
+  min-width: 0;
+  max-width: none;
+  flex-grow: 0;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;
+  font-size: var(--text-body-size-medium);
+  line-height: var(--control-medium-lineBoxHeight);
+}
+
+.PageHeader-actions select.form--select {
+  color: var(--fgColor-default);
+  background-color: var(--control-bgColor-rest);
+  border-color: var(--borderColor-default);
+}
+
+.PageHeader-actions select.form--select:focus,
+.PageHeader-actions select.form--select:active {
+  border-color: var(--fgColor-accent);
+  outline: none;
+}
+
+.PageHeader-actions select.form--select option,
+.PageHeader-actions select.form--select optgroup {
+  background-color: var(--bgColor-default);
+  color: var(--fgColor-default);
 }
 
 .PageHeader-breadcrumbs {
