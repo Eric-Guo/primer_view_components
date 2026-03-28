@@ -119,6 +119,21 @@ module Primer
 
           Primer::Beta::Text.new(**system_arguments)
         },
+        # Arbitrary markup (e.g. small forms) aligned with the title row in PageHeader-actions.
+        # @param mobile_icon [Symbol, String] Leading icon for the collapsed mobile action menu (when multiple actions).
+        # @param mobile_label [String] Label for the mobile menu entry.
+        html: lambda { |mobile_icon:, mobile_label:, **system_arguments, &block|
+          deny_tag_argument(**system_arguments)
+
+          system_arguments[:tag] = :div
+          system_arguments = set_action_arguments(system_arguments)
+          add_option_to_mobile_menu(system_arguments, mobile_icon, mobile_label, :default)
+
+          component = Primer::BaseComponent
+          create_mobile_single_action(component, **system_arguments, &block)
+
+          component.new(**system_arguments, &block)
+        },
         menu: {
           renders: lambda { |**system_arguments, &block|
             deny_tag_argument(**system_arguments)
