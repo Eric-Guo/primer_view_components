@@ -10,9 +10,9 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    actionpack (8.0.2)
-      actionview (= 8.0.2)
-      activesupport (= 8.0.2)
+    actionpack (8.0.5)
+      actionview (= 8.0.5)
+      activesupport (= 8.0.5)
       nokogiri (>= 1.8.5)
       rack (>= 2.2.4)
       rack-session (>= 1.0.1)
@@ -20,15 +20,15 @@ GEM
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
       useragent (~> 0.16)
-    actionview (8.0.2)
-      activesupport (= 8.0.2)
+    actionview (8.0.5)
+      activesupport (= 8.0.5)
       builder (~> 3.1)
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    activemodel (8.0.2)
-      activesupport (= 8.0.2)
-    activesupport (8.0.2)
+    activemodel (8.0.5)
+      activesupport (= 8.0.5)
+    activesupport (8.0.5)
       base64
       benchmark (>= 0.3)
       bigdecimal
@@ -57,7 +57,7 @@ GEM
       parser (>= 2.4)
       smart_properties
     bigdecimal (4.1.2)
-    bootsnap (1.23.0)
+    bootsnap (1.24.1)
       msgpack (~> 1.2)
     builder (3.3.0)
     capybara (3.40.0)
@@ -75,7 +75,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    css_parser (1.21.1)
+    css_parser (2.1.0)
       addressable
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
@@ -89,7 +89,7 @@ GEM
     docile (1.4.1)
     drb (2.2.3)
     dry-cli (1.4.1)
-    erb (6.0.3)
+    erb (6.0.4)
     erb_lint (0.9.0)
       activesupport
       better_html (>= 2.0.1)
@@ -119,7 +119,7 @@ GEM
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     io-console (0.8.2)
-    irb (1.17.0)
+    irb (1.18.0)
       pp (>= 0.6.0)
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
@@ -158,24 +158,24 @@ GEM
     msgpack (1.8.0)
     mutex_m (0.3.0)
     nio4r (2.7.5)
-    nokogiri (1.19.2-aarch64-linux-gnu)
+    nokogiri (1.19.3-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.19.2-aarch64-linux-musl)
+    nokogiri (1.19.3-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.19.2-arm-linux-gnu)
+    nokogiri (1.19.3-arm-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.19.2-arm-linux-musl)
+    nokogiri (1.19.3-arm-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.19.2-arm64-darwin)
+    nokogiri (1.19.3-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.19.2-x86_64-darwin)
+    nokogiri (1.19.3-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.19.2-x86_64-linux-gnu)
+    nokogiri (1.19.3-x86_64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.19.2-x86_64-linux-musl)
+    nokogiri (1.19.3-x86_64-linux-musl)
       racc (~> 1.4)
     openproject-octicons (19.34.0)
-    parallel (1.28.0)
+    parallel (2.1.0)
     parser (3.3.11.1)
       ast (~> 2.4.1)
       racc
@@ -210,13 +210,14 @@ GEM
     rails-html-sanitizer (1.7.0)
       loofah (~> 2.25)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
-    railties (8.0.2)
-      actionpack (= 8.0.2)
-      activesupport (= 8.0.2)
+    railties (8.0.5)
+      actionpack (= 8.0.5)
+      activesupport (= 8.0.5)
       irb (~> 1.13)
       rackup (>= 1.0.0)
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
+      tsort (>= 0.2)
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.4.2)
@@ -265,7 +266,7 @@ GEM
       rubocop (>= 1.0.0)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    rubyzip (3.2.2)
+    rubyzip (3.3.0)
     securerandom (0.4.1)
     selenium-webdriver (4.43.0)
       base64 (~> 0.2)
@@ -345,9 +346,9 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  actionview (= 8.0.2)
-  activemodel (= 8.0.2)
-  activesupport (= 8.0.2)
+  actionview (= 8.0.5)
+  activemodel (= 8.0.5)
+  activesupport (= 8.0.5)
   allocation_stats (~> 0.1)
   benchmark
   benchmark-ips (~> 2)
@@ -367,7 +368,7 @@ DEPENDENCIES
   openproject-primer_view_components!
   puma (~> 7.2.0)
   rack-cors
-  railties (= 8.0.2)
+  railties (= 8.0.5)
   rake (~> 13.3)
   rubocop
   rubocop-github (~> 0.26.0)
@@ -388,4 +389,4 @@ DEPENDENCIES
   yard (~> 0.9.38)
 
 BUNDLED WITH
-   2.5.5
+  4.0.11
