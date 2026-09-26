@@ -74,6 +74,7 @@ const classNames = new Set([
   'Box-footer',
   'Box-header',
   'Box-header--blue',
+  'Box-list',
   'Box-list--roundedBottom',
   'Box-list--roundedTop',
   'Box-row',
