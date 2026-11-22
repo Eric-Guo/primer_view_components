@@ -10154,6 +10154,19 @@
         }
       },
       {
+        "preview_path": "primer/open_project/page_header/legacy_select_action",
+        "name": "legacy_select_action",
+        "snapshot": "false",
+        "skip_rules": {
+          "wont_fix": [
+            "region"
+          ],
+          "will_fix": [
+            "color-contrast"
+          ]
+        }
+      },
+      {
         "preview_path": "primer/open_project/page_header/menu_actions",
         "name": "menu_actions",
         "snapshot": "false",

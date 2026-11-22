@@ -1,0 +1,14 @@
+<%= render(Primer::OpenProject::PageHeader.new) do |header| %>
+  <% header.with_title { "Work packages" } %>
+  <% header.with_breadcrumbs([{ href: "/projects", text: "Projects" }, "Work packages"]) %>
+  <% header.with_action_html(mobile_icon: nil, mobile_label: nil, align_items: :center, gap: 2) do %>
+    <label class="form--label" for="sort-by">Sort by</label>
+    <select class="form--select" id="sort-by">
+      <optgroup label="Activity">
+        <option>Recently updated</option>
+        <option>Recently created</option>
+      </optgroup>
+    </select>
+  <% end %>
+  <% header.with_action_link(mobile_icon: :download, mobile_label: "Export", href: "/export") { "Export" } %>
+<% end %>

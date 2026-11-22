@@ -74,6 +74,11 @@ module Primer
         render_with_template(locals: {})
       end
 
+      # @label With a legacy select action
+      def legacy_select_action
+        render_with_template
+      end
+
       # @label With a menu inside the actions
       def menu_actions
         callback = lambda do |button|
