@@ -1,0 +1,130 @@
+# Use an amd64 Linux Docker runner to match the demo's Ruby lockfile.
+variables:
+  PLAYWRIGHT_VERSION: '1.65.1'
+  PNPM_VERSION: '12.21.0'
+  RUBY_VERSION: '4.0.10'
+  PNPM_STORE_DIR: '$CI_PROJECT_DIR/.pnpm-store'
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+
+stages:
+  - check
+  - test
+
+default:
+  image: 'mcr.microsoft.com/playwright:v${PLAYWRIGHT_VERSION}-noble'
+  interruptible: true
+  cache:
+    - &pnpm_cache
+      key:
+        prefix: '${CI_JOB_NAME}-pnpm-${PNPM_VERSION}'
+        files:
+          - pnpm-lock.yaml
+          - demo/package-lock.json
+      paths:
+        - .pnpm-store/
+  before_script:
+    - &install_pnpm npm install --global "pnpm@${PNPM_VERSION}"
+    - &install_dependencies pnpm install --frozen-lockfile --ignore-scripts --store-dir "$PNPM_STORE_DIR"
+
+lint:
+  stage: check
+  script:
+    - pnpm run lint:stylelint
+    - pnpm run lint:eslint
+
+.ruby_tests:
+  stage: test
+  timeout: 45 minutes
+  variables:
+    BUNDLE_FROZEN: 'true'
+    BUNDLE_JOBS: '4'
+    BUNDLE_PATH: '$CI_PROJECT_DIR/vendor/bundle'
+    BUNDLE_RETRY: '3'
+    DISABLE_SPRING: '1'
+    FERRUM_PROCESS_TIMEOUT: '30'
+    VITE_RUBY_PACKAGE_MANAGER: pnpm
+  cache:
+    - *pnpm_cache
+    - key:
+        prefix: '${CI_JOB_NAME}-ruby-${RUBY_VERSION}'
+        files:
+          - Gemfile.lock
+          - demo/Gemfile.lock
+      paths:
+        - vendor/bundle/
+  before_script:
+    - *install_pnpm
+    - *install_dependencies
+    - |
+      actual_playwright_version=$(node -p 'require("playwright/package.json").version')
+      if [ "$actual_playwright_version" != "$PLAYWRIGHT_VERSION" ]; then
+        echo "Set PLAYWRIGHT_VERSION in .gitlab-ci.yml to $actual_playwright_version to match the lockfile." >&2
+        exit 1
+      fi
+    - pnpm --dir demo import
+    - pnpm --dir demo install --frozen-lockfile --ignore-scripts --store-dir "$PNPM_STORE_DIR"
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends build-essential libffi-dev libgmp-dev libssl-dev libyaml-dev pkg-config zlib1g-dev
+    - |
+      ruby_dir="/opt/hostedtoolcache/Ruby/${RUBY_VERSION}"
+      ruby_archive="ruby-${RUBY_VERSION}-ubuntu-24.04-x64.tar.gz"
+      curl --fail --silent --show-error --location --retry 3 \
+        "https://github.com/ruby/ruby-builder/releases/download/ruby-${RUBY_VERSION}/${ruby_archive}" \
+        --output "/tmp/${ruby_archive}"
+      mkdir -p "$ruby_dir"
+      tar -xzf "/tmp/${ruby_archive}" -C "$ruby_dir"
+      export PATH="$ruby_dir/x64/bin:$PATH"
+      ruby --version
+    - gem install bundler --no-document --version "$(awk '/^BUNDLED WITH$/ { getline; print $1 }' Gemfile.lock)"
+    - bundle install
+
+ruby:
+  extends: .ruby_tests
+  script:
+    - export BROWSER_PATH="$(node -p "require('playwright').chromium.executablePath()")"
+    - test -x "$BROWSER_PATH"
+    # The selector suite inspects the unminified component CSS.
+    - CI=false pnpm run build
+    - bundle exec rake test test:component_css
+  artifacts:
+    when: on_failure
+    expire_in: 7 days
+    paths:
+      - demo/log/test.log
+      - demo/test/snapshots/
+      - test/snapshots/
+
+playwright:
+  extends: .ruby_tests
+  variables:
+    PLAYWRIGHT_WEB_SERVER_COMMAND: 'cd demo && VITE_RUBY_AUTO_BUILD=false bin/rails server -b 127.0.0.1 -p 4000'
+    PLAYWRIGHT_HTML_OPEN: never
+    PLAYWRIGHT_HTML_OUTPUT_DIR: '$CI_PROJECT_DIR/.playwright/report'
+    PLAYWRIGHT_JUNIT_OUTPUT_FILE: '$CI_PROJECT_DIR/.playwright/junit.xml'
+  script:
+    - pnpm run build
+    - bundle exec rake docs:build static:dump
+    - |
+      (
+        cd demo
+        gem install bundler --no-document --version "$(awk '/^BUNDLED WITH$/ { getline; print $1 }' Gemfile.lock)"
+        bundle install
+        pnpm run build:css
+        bin/vite build --mode development
+      )
+    - pnpm exec playwright test --update-snapshots=none --reporter=line,html,junit
+  artifacts:
+    when: always
+    expire_in: 7 days
+    reports:
+      junit: .playwright/junit.xml
+    paths:
+      - .playwright/report/
+      - .playwright/results/

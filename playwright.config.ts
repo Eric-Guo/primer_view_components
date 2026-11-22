@@ -48,7 +48,7 @@ const config: PlaywrightTestConfig = {
   ],
 
   webServer: {
-    command: 'script/dev',
+    command: process.env.PLAYWRIGHT_WEB_SERVER_COMMAND ?? 'script/dev',
     port: 4000,
   },
 }
