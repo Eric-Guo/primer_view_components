@@ -375,7 +375,7 @@
     }
 
     &::after {
-      @mixin minTouchTarget var(--control-medium-size) var(--control-medium-size);
+      @mixin minTouchTarget var(--control-medium-size), var(--control-medium-size);
 
       @media (pointer: coarse) {
         min-width: var(--control-minTarget-coarse);
@@ -746,7 +746,7 @@
 
   /* extend touch target */
   &::after {
-    @mixin minTouchTarget var(--control-medium-size) var(--control-medium-size);
+    @mixin minTouchTarget var(--control-medium-size), var(--control-medium-size);
   }
 
   &[disabled] {
@@ -817,7 +817,7 @@
   appearance: none;
 
   &::after {
-    @mixin minTouchTarget var(--control-medium-size) var(--control-medium-size);
+    @mixin minTouchTarget var(--control-medium-size), var(--control-medium-size);
   }
 
   &[disabled] {
