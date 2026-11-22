@@ -64,7 +64,7 @@ module Primer
       # @label With trailing counter
       # @snapshot
       def with_trailing_counter
-        render(Primer::Alpha::ActionList.new(aria: { label: "Projects" })) do |component|
+        render(Primer::Alpha::ActionList.new) do |component|
           component.with_heading(title: "Budget overruns")
           component.with_trailing_visual_counter(count: 15)
 
