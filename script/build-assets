@@ -1,13 +1,14 @@
 #!/bin/bash
 
 export INPUT_TYPE=$1
+export PATH="$PWD/node_modules/.bin:$PATH"
 
 build_css() {
   # Get a list of all the CSS files in the src directory
   CSS_FILES=$(find app/components/primer -name '*.pcss' ! -path '*/primer.pcss')
-  npx postcss $CSS_FILES --dir app/components --base app/components --ext css && \
+  postcss $CSS_FILES --dir app/components --base app/components --ext css && \
     # Build main CSS bundle \
-    npx postcss -o app/assets/styles/primer_view_components.css app/components/primer/primer.pcss && \
+    postcss -o app/assets/styles/primer_view_components.css app/components/primer/primer.pcss && \
     # Export CSS selectors as json \
     script/export-css-selectors
 }
@@ -15,7 +16,7 @@ build_css() {
 # Function to build the assets
 build_js() {
   # Build the assets
-  npx tsc && npx rollup -c
+  tsc && rollup -c
 }
 
 if [ "$INPUT_TYPE" = "css" ]; then

@@ -10,10 +10,11 @@
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {
+    "terser": "^5.51.4",
     "vite": "^8.0.16",
-    "vite-plugin-ruby": "^5.2.3"
+    "vite-plugin-ruby": "^5.2.6"
   },
   "scripts": {
-    "build:css": "yarn run postcss --config ../ ./app/assets/stylesheets/application.postcss.css -o ./app/assets/builds/application.css"
+    "build:css": "../node_modules/.bin/postcss --config ../ ./app/assets/stylesheets/application.postcss.css -o ./app/assets/builds/application.css"
   }
 }
