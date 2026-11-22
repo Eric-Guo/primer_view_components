@@ -5228,6 +5228,12 @@
         "description": "The format the display should take. One of `:auto`, `:elapsed`, or `:micro`."
       },
       {
+        "name": "absolute_format",
+        "type": "Symbol",
+        "default": "`nil`",
+        "description": "Use `:compact` for a shorter display when the timestamp is shown as an absolute time."
+      },
+      {
         "name": "format_style",
         "type": "Symbol",
         "default": "`nil`",

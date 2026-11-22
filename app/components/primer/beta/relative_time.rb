@@ -103,6 +103,7 @@ module Primer
       # @param threshold [String] The threshold, in ISO-8601 'durations' format, at which relative time displays become absolute.
       # @param precision [Symbol] The precision elapsed time should display. <%= one_of(Primer::Beta::RelativeTime::PRECISION_OPTIONS) %>
       # @param format [Symbol] The format the display should take. <%= one_of(Primer::Beta::RelativeTime::FORMAT_OPTIONS) %>
+      # @param absolute_format [Symbol] Use `:compact` for a shorter display when the timestamp is shown as an absolute time.
       # @param format_style [Symbol] The format the display should take. <%= one_of(Primer::Beta::RelativeTime::FORMAT_STYLE_OPTIONS) %>
       # @param lang [String] The language to use.
       # @param title [String] Provide a custom title to the element.
@@ -126,6 +127,7 @@ module Primer
         threshold: nil,
         precision: PRECISION_DEFAULT,
         format: nil,
+        absolute_format: nil,
         format_style: nil,
         lang: nil,
         title: nil,
@@ -153,6 +155,7 @@ module Primer
         @system_arguments[:"no-title"] = no_title if no_title
         @system_arguments[:lang] = lang if lang.present?
         @system_arguments[:format] = fetch_or_fallback(FORMAT_OPTIONS, format, FORMAT_DEFAULT) if format.present?
+        @system_arguments[:"absolute-format"] = absolute_format if absolute_format.present?
         @system_arguments[:"format-style"] = format_style if format_style.present?
         @system_arguments[:"aria-hidden"] = aria_hidden if aria_hidden.present?
         if datetime.present? && datetime.respond_to?(:iso8601)

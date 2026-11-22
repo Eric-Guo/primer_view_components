@@ -21,6 +21,7 @@ module Primer
       # @param time_zone_name [Symbol] select [~, long, short, short_offset, long_offset, short_generic, long_generic]
       # @param precision [Symbol] select [~, second, minute, hour, day, month, year]
       # @param format [Symbol] select [~, auto, micro, elapsed]
+      # @param absolute_format [Symbol] select [~, compact]
       # @param format_style [Symbol] select [~, long, short, narrow]
       # @param lang [String] text
       # @param title [String] text
@@ -38,6 +39,7 @@ module Primer
         threshold: nil,
         precision: nil,
         format: nil,
+        absolute_format: nil,
         format_style: nil,
         datetime: Time.utc(2020, 1, 1, 0, 0, 0),
         lang: nil,
@@ -58,6 +60,7 @@ module Primer
                  threshold: threshold,
                  precision: precision,
                  format: format,
+                 absolute_format: absolute_format,
                  format_style: format_style,
                  datetime: datetime,
                  lang: lang,

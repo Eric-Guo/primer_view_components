@@ -26,6 +26,11 @@ class PrimerBetaRelativeTimeTest < Minitest::Test
     assert_selector("relative-time[hour-cycle='h23']")
   end
 
+  def test_component_accepts_absolute_format
+    render_inline(Primer::Beta::RelativeTime.new(datetime: "2022-12-06T11:14:46Z", absolute_format: :compact))
+    assert_selector("relative-time[absolute-format='compact']")
+  end
+
   private
 
   def assert_custom_element_manifest(package_name, class_obj)
@@ -38,7 +43,7 @@ class PrimerBetaRelativeTimeTest < Minitest::Test
       mod.fetch("declarations").select { |decl| decl.fetch("kind") == "class" }
     end
     class_decl = decls.find { |decl| decl.fetch("name") == class_name }
-    class_params = class_obj.instance_method(:initialize).parameters.select { |param| param.first == :keyreq || param.first == :key }.map(&:last)
+    class_params = class_obj.instance_method(:initialize).parameters.filter_map { |kind, name| name if %i[keyreq key].include?(kind) }
     fields = class_decl.fetch("attributes").filter_map { |attr| attr.fetch("name").underscore.to_sym }
     deprecated_fields = class_decl.fetch("members").filter_map do |member|
       member.fetch("name").to_sym if member.key?("deprecated")
