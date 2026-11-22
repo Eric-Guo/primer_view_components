@@ -17,8 +17,8 @@ namespace :test do
       Dir.chdir("demo/") do
         # if vite is running in prod mode, we're probably running tests, see script/test-setup
         if ENV["VITE_RUBY_MODE"] != "production"
-          system "npm run build:css"
-          system "bin/vite build"
+          sh ENV.fetch("VITE_RUBY_PACKAGE_MANAGER", "npm"), "run", "build:css"
+          sh "bin/vite", "build", "--mode", "test"
         end
       end
     end
