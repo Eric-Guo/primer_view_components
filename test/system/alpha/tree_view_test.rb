@@ -11,6 +11,9 @@ module Alpha
 
     include Primer::TreeViewHelpers
 
+    CLOUD_SERVICES_PATH = "/healthz?node=cloud-services"
+    OPENPROJECT_PATH = "/healthz?node=openproject"
+
     ##### TEST HELPERS #####
 
     def active_element
@@ -56,6 +59,10 @@ module Alpha
       within_window(window) do
         assert_current_path to
       end
+    end
+
+    def visit_links_preview(**params)
+      visit_preview(:links, local_links: true, **params)
     end
 
     def refute_window_opened(&block)
@@ -213,9 +220,9 @@ module Alpha
     end
 
     def test_sub_tree_node_links_navigate
-      visit_preview(:links)
+      visit_links_preview
 
-      assert_window_opened(to: "https://en.wikipedia.org/wiki/Cloud_computing") do
+      assert_window_opened(to: CLOUD_SERVICES_PATH) do
         activate_at_path("Cloud Services")
       end
 
@@ -225,7 +232,7 @@ module Alpha
     end
 
     def test_disabled_sub_tree_node_links_do_not_navigate
-      visit_preview(:links, disabled: true)
+      visit_links_preview(disabled: true)
 
       refute_window_opened do
         activate_at_path("Cloud Services")
@@ -233,15 +240,15 @@ module Alpha
     end
 
     def test_leaf_node_links_navigate
-      visit_preview(:links, expanded: true)
+      visit_links_preview(expanded: true)
 
-      assert_window_opened(to: "https://www.openproject.org/") do
+      assert_window_opened(to: OPENPROJECT_PATH) do
         activate_at_path("Cloud Services", "OpenProject")
       end
     end
 
     def test_disabled_leaf_node_links_do_not_navigate
-      visit_preview(:links, expanded: true, disabled: true)
+      visit_links_preview(expanded: true, disabled: true)
 
       refute_window_opened do
         activate_at_path("Cloud Services", "OpenProject")
@@ -370,9 +377,9 @@ module Alpha
     end
 
     def test_sub_tree_node_links_navigate_on_enter
-      visit_preview(:links)
+      visit_links_preview
 
-      assert_window_opened(to: "https://en.wikipedia.org/wiki/Cloud_computing") do
+      assert_window_opened(to: CLOUD_SERVICES_PATH) do
         keyboard.type(:tab, :enter)
       end
 
@@ -382,9 +389,9 @@ module Alpha
     end
 
     def test_sub_tree_node_links_navigate_on_space
-      visit_preview(:links)
+      visit_links_preview
 
-      assert_window_opened(to: "https://en.wikipedia.org/wiki/Cloud_computing") do
+      assert_window_opened(to: CLOUD_SERVICES_PATH) do
         keyboard.type(:tab, :space)
       end
 
@@ -418,17 +425,17 @@ module Alpha
     end
 
     def test_leaf_node_links_navigate_on_enter
-      visit_preview(:links, expanded: true)
+      visit_links_preview(expanded: true)
 
-      assert_window_opened(to: "https://www.openproject.org/") do
+      assert_window_opened(to: OPENPROJECT_PATH) do
         keyboard.type(:tab, :down, :enter)
       end
     end
 
     def test_leaf_node_links_navigate_on_space
-      visit_preview(:links, expanded: true)
+      visit_links_preview(expanded: true)
 
-      assert_window_opened(to: "https://www.openproject.org/") do
+      assert_window_opened(to: OPENPROJECT_PATH) do
         keyboard.type(:tab, :down, :space)
       end
     end

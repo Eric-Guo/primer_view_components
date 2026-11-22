@@ -157,10 +157,14 @@ module Primer
       #
       # @param expanded [Boolean] toggle
       # @param disabled [Boolean] toggle
-      def links(expanded: false, disabled: false)
+      def links(expanded: false, disabled: false, local_links: false)
+        local_links = coerce_bool(local_links)
+
         render_with_template(locals: {
           expanded: coerce_bool(expanded),
-          disabled: coerce_bool(disabled)
+          disabled: coerce_bool(disabled),
+          cloud_services_href: local_links ? "/healthz?node=cloud-services" : "https://en.wikipedia.org/wiki/Cloud_computing",
+          openproject_href: local_links ? "/healthz?node=openproject" : "https://www.openproject.org"
         })
       end
 

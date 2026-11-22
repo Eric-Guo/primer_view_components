@@ -43,6 +43,7 @@ lint:
   stage: test
   timeout: 45 minutes
   variables:
+    BUNDLE_CACHE_PREFIX: ruby
     BUNDLE_FROZEN: 'true'
     BUNDLE_JOBS: '4'
     BUNDLE_PATH: '$CI_PROJECT_DIR/vendor/bundle'
@@ -53,7 +54,7 @@ lint:
   cache:
     - *pnpm_cache
     - key:
-        prefix: '${CI_JOB_NAME}-ruby-${RUBY_VERSION}'
+        prefix: '${CI_JOB_NAME}-${BUNDLE_CACHE_PREFIX}-${RUBY_VERSION}'
         files:
           - Gemfile.lock
           - demo/Gemfile.lock
@@ -62,34 +63,27 @@ lint:
   before_script:
     - *install_pnpm
     - *install_dependencies
-    - |
-      actual_playwright_version=$(node -p 'require("playwright/package.json").version')
-      if [ "$actual_playwright_version" != "$PLAYWRIGHT_VERSION" ]; then
-        echo "Set PLAYWRIGHT_VERSION in .gitlab-ci.yml to $actual_playwright_version to match the lockfile." >&2
-        exit 1
-      fi
     - pnpm --dir demo import
     - pnpm --dir demo install --frozen-lockfile --ignore-scripts --store-dir "$PNPM_STORE_DIR"
-    - apt-get update -qq
-    - apt-get install -y --no-install-recommends build-essential libffi-dev libgmp-dev libssl-dev libyaml-dev pkg-config zlib1g-dev
-    - |
-      ruby_dir="/opt/hostedtoolcache/Ruby/${RUBY_VERSION}"
-      ruby_archive="ruby-${RUBY_VERSION}-ubuntu-24.04-x64.tar.gz"
-      curl --fail --silent --show-error --location --retry 3 \
-        "https://github.com/ruby/ruby-builder/releases/download/ruby-${RUBY_VERSION}/${ruby_archive}" \
-        --output "/tmp/${ruby_archive}"
-      mkdir -p "$ruby_dir"
-      tar -xzf "/tmp/${ruby_archive}" -C "$ruby_dir"
-      export PATH="$ruby_dir/x64/bin:$PATH"
-      ruby --version
-    - gem install bundler --no-document --version "$(awk '/^BUNDLED WITH$/ { getline; print $1 }' Gemfile.lock)"
-    - bundle install
 
 ruby:
   extends: .ruby_tests
+  variables:
+    BUNDLE_CACHE_PREFIX: cimg-ruby
+  image:
+    name: 'cimg/ruby:${RUBY_VERSION}-browsers'
+    entrypoint: ['']
+    docker:
+      user: root
   script:
-    - export BROWSER_PATH="$(node -p "require('playwright').chromium.executablePath()")"
-    - test -x "$BROWSER_PATH"
+    - &install_bundle |
+      bundler_version=$(awk '/^BUNDLED WITH$/ { getline; print $1 }' Gemfile.lock)
+      if ! gem list --installed bundler --version "$bundler_version"; then
+        gem install bundler --no-document --version "$bundler_version"
+      fi
+      bundle install
+    - export BROWSER_PATH="$(command -v google-chrome)"
+    - '"$BROWSER_PATH" --version'
     # The selector suite inspects the unminified component CSS.
     - CI=false pnpm run build
     - bundle exec rake test test:component_css
@@ -109,6 +103,25 @@ playwright:
     PLAYWRIGHT_HTML_OUTPUT_DIR: '$CI_PROJECT_DIR/.playwright/report'
     PLAYWRIGHT_JUNIT_OUTPUT_FILE: '$CI_PROJECT_DIR/.playwright/junit.xml'
   script:
+    - |
+      actual_playwright_version=$(node -p 'require("playwright/package.json").version')
+      if [ "$actual_playwright_version" != "$PLAYWRIGHT_VERSION" ]; then
+        echo "Set PLAYWRIGHT_VERSION in .gitlab-ci.yml to $actual_playwright_version to match the lockfile." >&2
+        exit 1
+      fi
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends build-essential libffi-dev libgmp-dev libssl-dev libyaml-dev pkg-config zlib1g-dev
+    - |
+      ruby_dir="/opt/hostedtoolcache/Ruby/${RUBY_VERSION}"
+      ruby_archive="ruby-${RUBY_VERSION}-ubuntu-24.04-x64.tar.gz"
+      curl --fail --silent --show-error --location --retry 3 \
+        "https://github.com/ruby/ruby-builder/releases/download/ruby-${RUBY_VERSION}/${ruby_archive}" \
+        --output "/tmp/${ruby_archive}"
+      mkdir -p "$ruby_dir"
+      tar -xzf "/tmp/${ruby_archive}" -C "$ruby_dir"
+      export PATH="$ruby_dir/x64/bin:$PATH"
+      ruby --version
+    - *install_bundle
     # Match the DejaVu Sans shortcut glyphs in the visual baselines.
     - apt-get install -y --no-install-recommends fonts-dejavu-core
     - pnpm run build
