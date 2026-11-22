@@ -1,8 +1,7 @@
 import github from 'eslint-plugin-github'
-import tseslint from 'typescript-eslint'
 import {defineConfig, globalIgnores} from 'eslint/config'
 
-const config = defineConfig([
+export default defineConfig([
   globalIgnores(['**/*.d.ts']),
   github.getFlatConfigs().browser,
   github.getFlatConfigs().recommended,
@@ -47,5 +46,3 @@ const config = defineConfig([
     },
   },
 ])
-
-export default tseslint.config(config)

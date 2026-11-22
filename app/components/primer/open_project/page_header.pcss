@@ -82,9 +82,11 @@
   margin: 0;
   white-space: nowrap;
   font-size: var(--text-body-size-medium);
+  /* stylelint-disable-next-line primer/typography -- align the label with the adjacent control */
   line-height: var(--control-medium-lineBoxHeight);
 }
 
+/* stylelint-disable selector-max-type, selector-no-qualifying-type -- target native selects and their options in legacy OpenProject forms */
 .PageHeader-actions select.form--select {
   color: var(--fgColor-default);
   background-color: var(--control-bgColor-rest);
@@ -93,6 +95,7 @@
 
 .PageHeader-actions select.form--select:focus,
 .PageHeader-actions select.form--select:active {
+  /* stylelint-disable-next-line primer/colors -- preserve the legacy focus border color across themes */
   border-color: var(--fgColor-accent);
   outline: none;
 }
@@ -102,6 +105,7 @@
   background-color: var(--bgColor-default);
   color: var(--fgColor-default);
 }
+/* stylelint-enable selector-max-type, selector-no-qualifying-type */
 
 .PageHeader-breadcrumbs {
   display: block;

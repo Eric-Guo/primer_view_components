@@ -486,9 +486,7 @@ export class SelectPanelElement extends HTMLElement {
     }
 
     const item = (event.target as Element).closest(visibleMenuItemSelectors)?.parentElement as
-      | SelectPanelItem
-      | null
-      | undefined
+      SelectPanelItem | null | undefined
 
     const targetIsItem = item !== null && item !== undefined
 

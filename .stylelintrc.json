@@ -17,6 +17,12 @@
         "ignoreAtRules": ["mixin", "define-mixin"]
       }
     ],
+    "at-rule-prelude-no-invalid": [
+      true,
+      {
+        "ignoreAtRules": ["mixin", "define-mixin"]
+      }
+    ],
     "plugin/browser-compat": [
       true,
       {

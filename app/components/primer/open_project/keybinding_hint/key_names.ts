@@ -1,7 +1,6 @@
 import type {Platform} from './platform'
 
 /** Converts the first character of the string to upper case and the remaining to lower case. */
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 const capitalize = ([first, ...rest]: string) => (first?.toUpperCase() ?? '') + rest.join('').toLowerCase()
 
 // In the below records, we don't intend to cover every single possible key - only those that
