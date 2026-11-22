@@ -109,6 +109,8 @@ playwright:
     PLAYWRIGHT_HTML_OUTPUT_DIR: '$CI_PROJECT_DIR/.playwright/report'
     PLAYWRIGHT_JUNIT_OUTPUT_FILE: '$CI_PROJECT_DIR/.playwright/junit.xml'
   script:
+    # Match the DejaVu Sans shortcut glyphs in the visual baselines.
+    - apt-get install -y --no-install-recommends fonts-dejavu-core
     - pnpm run build
     - bundle exec rake docs:build static:dump
     - |
